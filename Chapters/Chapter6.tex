@@ -1,0 +1,32 @@
+% Chapter 6
+
+\chapter{Chapter 6: Discussion and Conclusion} % Main chapter title
+
+\label{Chapter 6} % For referencing the chapter elsewhere, use \ref{Chapter6} 
+
+%----------------------------------------------------------------------------------------
+\section{Discussion}
+\paragraph{}
+Firstly, in the model comparison results, it is clear that Model-Free method beat other models in AICc. However, there still exists several other insights. 
+\paragraph{}
+It is worth noting that Q-learning fits much better than SARSA, and Q-learning with forget rate fits much better than Q-learning without forget rate. It is common to add forget rate to decision making models, but it seems little RL papers ever adding forget rate to either MF or MB models. Our data has demonstrated clearly that Q value may be forgotten. 
+\paragraph{}
+Model-Based Centered algorithms including MB and MFHMB have worst model comparison result. The reason may be that even the MFHMB has successfully decreased computation complexity, it is still very hard to compute precisely. What's more, human's ability of probability representation is not so precise because of cognitive bias such as framework effect. These two reasons make the value estimation of Model-Based algorithms unstable and untrustworthy. Future work may design a measure in the experiment to see whether participants learn wrong probability or they learn the correct probability information but mistakenly calculate the Q value. 
+\paragraph{}
+The second best model is the Hybrid model. What's more interesting is that 10 of 11 participants whose Hybrid model AICc is lower than any other models are in block condition. This seems to convey us a message that in block condition people tend to use both MF and MB while in randomized condition almost all the people tend to use MF only. This may be because of working memory limit. In the block condition, participants only need to learn one task within a block while in the randomized condition participants need to learn three tasks simultaneously. The block task is easier, which means there is more space in workin memory. In this case, our brain may activate Model-Based value estimation system to help Model-Free estimation more precisely. To examine this, future work could design a side task to fulfill the free working memory to see if the Model-Based part will disappear. Another feasible way is to measure participant's working memory capacity and do correlation with Model-Based weight. 
+\paragraph{}
+The third best model is MBHMF model, though it has only 5 best AICc. This may indicate that the Model-Based Help Model-Free to fix mistakes. Actually the AICc of MBHMF is very close to MF model. There exists a problem that we manually set the threshold of confidently replace old action being updated. If we could relax this constraint to make the threshold a free variable, maybe MBHMF model will have a better performance. 
+\paragraph{}
+The rule of thumb for repeating randomly initialization is $10^n$, in which $n$ is the parameter number. Obviously we are far from the requirement. It may end up sticking in a local minimum. Future work should add more repeat times to guarantee at least a near-optimal local optimum. 
+\paragraph{}
+There exists another possible model: participants may never build any value or transition matrix in their brain. They just randomly pick actions until a good sequence being spotted and remembered. For example, a participant may happen to choose the optimal action sequence to reach the goal. Then he remembered the action sequence, and carry out this action sequence with 100\% probability. If they are transferred to primary sequence he will successfully win 18 tokens with probability $0.7^2=0.49$, but if not, he will randomly choose action again because he only knows how to move from start state to end state by pressing an action consequence. Future work could examine the model comparison result for these kinds of heuristic methods as well. 
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+\section{Conclusion}
+In this thesis, we introduce Model-Free and Model-Based classic algorithms for Markov Decision Process. Then we design a relatively complex \enquote{labyrinth}-like environment to see how human behave in a complicated environment. The result shows participants do learn something and their performance keeps getting better along the trial set. We also fit five models to the participants' data. The result demonstrates that Q-learning is a better fit than SARSA, adding forget rate will become better fit for data, and Model-Free is the most convincing model given data but Hybrid model and Model-Based Help Model-Free model are also useful. Participant's data could not be explained totally by Model-Free model. 
+
+
+%----------------------------------------------------------------------------------------
+

@@ -1,0 +1,111 @@
+% Chapter 2
+
+\chapter{Chapter 2: Background Theory} % Main chapter title
+
+\label{Chapter 2} % For referencing the chapter elsewhere, use \ref{Chapter2} 
+
+%----------------------------------------------------------------------------------------
+\section{Reinforcement Learning}
+\paragraph{}
+From Thorndike's Law of Effect, Pavlov's classical conditioning and Skinner's operant conditioning, people are trying to connect the consequence to the behavior (\cite{thorndike1927law}). Reinforcement learning (RL) is initially a psychology term to explain the phenomenon that people will increase the probability of doing something after positive stimulation such as reward and will decrease the probability after negative stimulation such as electric shock (similar to operant conditioning) (\cite{dayan2002reward}). In the 1980s, reinforcement learning is introduced to machine learning area, concerned with how software agents ought to take actions in an environment so as to maximize some notion of cumulative reward. 
+\paragraph{}
+It is widely accepted that reinforcement learning is the proper solution to Markov decision process. Most recently, reinforcement learning in computer science has been experiencing a boost due to its great success on several tasks such as Go and Atari games (\cite{mnih2015human}). 
+\paragraph{}
+At the same time, reinforcement learning in psychology and neuroscience have made great advancement. \citet{hollerman1998dopamine} discovered that dopamine neurons in midbrain have the corresponding activity with reward prediction error, which is the core element of Model-Free learning. This pattern is also frequently reported in later work (\cite{bayer2005midbrain}; \cite{waelti2001dopamine}). Human fMRI results also prove that stratum does have stronger activity when reward prediction error is positive (\cite{garrison2013prediction}; \cite{kishida2016subsecond}). 
+\paragraph{}
+Therefore, reinforcement learning has been proven effective both empirically and theoretically. What's more, it is viable in human brain via midbrain dopamine system. Taken all pieces together, reinforcement learning seems to become the most convincing theory in modeling sequential decision making. Thus, we will introduce several reinforcement learning algorithms in this section. We will also build our models on top of classic reinforcement learning algorithms in Chapter \ref{Chapter 5}. 
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+\section{Model-Free Algorithm Family}
+\paragraph{}
+Model-Free means the participant or agent does not build a model for the environment explicitly but to maintain a value estimation for each state-action pair. 
+
+\paragraph{}
+The Model-Free algorithm family mainly includes SARSA and Q-learning. To understand Model-Free algorithm, first we need to define \enquote{Q value} as in Equation \ref{eqn:Q definition}. The Q value represents how much value can I get in the long run after taking action $a$ in state $s$. Note that the value considers long run outcome rather than immediate outcome. According to this definition, if we could get the true Q value, we should just always choose the action with maximum Q value to gain the best performance. So, how do we calculate Q value?
+
+\begin{equation}
+\begin{aligned}
+Q(s,a)=\sum_{t=0}^\infty{\gamma^tR(s_t)}
+\end{aligned}
+\label{eqn:Q definition}
+\end{equation}
+
+\paragraph{}
+There are two classic methods to estimate Q value in the model-free manner: SARSA and Q-learning (\cite{daw2014algorithmic}). They are both motivated by reward prediction error (RPE). Reward prediction error is defined as the difference between the expected value and the real encountered value. If a participant receives a positive RPE, he will know that his prediction is underestimated and should be increased. If a participant receives a negative RPE, he will inversely decrease his value estimation. SARSA and Q-learning formulation are shown in Equation \ref{eqn:SARSA0} and \ref{eqn:Q-Learning0}. 
+\paragraph{}
+The difference between SARSA and Q-learning is that when calculating reward prediction error (RPE), SARSA uses the true action chosen by participants in the next timestep, while Q-learning uses the action with maximum Q value on the next state.
+
+\begin{equation}
+\begin{aligned}
+&\delta_{RPE}=r(s^{\prime})+\gamma Q_{SARSA}(s^{\prime}, a^{\prime})-Q_{SARSA}(s,a) \\
+&Q_{SARSA}(s,a)=Q_{SARSA}(s,a)+\alpha \delta_{RPE} \\
+\end{aligned}
+\label{eqn:SARSA0}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+&\delta_{RPE}=r(s^{\prime})+\gamma \max_{a^{\prime} \in a(s)}{Q_{Q}(s^{\prime}, a^{\prime})}- Q_{Q}(s,a) \\
+&Q_Q(s,a)=Q_Q(s,a)+\alpha \delta_{RPE} \\
+\end{aligned}
+\label{eqn:Q-Learning0}
+\end{equation}
+
+\paragraph{}
+Model-Free algorithms requires little computation but needs fair amount of storage because it need to store all the state-action pair values. However, Model-Free algorithms suffer from environment change because they could only re-learn the Q value when either transition $T$ or reward $R$ has been changed. 
+
+%----------------------------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------------------------
+\section{Model-Based Algorithm Family}
+\paragraph{}
+Unlike Model-Free algorithms, Model-Based algorithm maintain an explicit representation of the environment, i.e. the transition matrix $T$ and reward function $R$. The learning method of $T$ and $R$ will be explained in Chapter \ref{Chapter 5}. Here we will first explain several methods to calculate value estimation using estimated $T$ and $R$. 
+\paragraph{}
+The first intuitive method is to use the definition of value function to calculate v by regarding the estimated $T$ and $R$ as true $T$ and $R$. 
+
+\begin{equation}
+\begin{aligned}
+Q(s,a)=\hat{r} + \gamma \hat{T}\hat{R} + \gamma^2\hat{T}^2\hat{R} + ...
+\end{aligned}
+\label{eqn:Enumeration}
+\end{equation}
+
+\paragraph{}
+The second way is to use bellman equation (\cite{sutton1998introduction}) $Q = R+ \gamma TQ$. Specifically, we could build an iteration algorithm to do value iteration by Equation \ref{eqn:Consistency}, in which $Q_{t}$ represents t-th iteration Q. 
+
+\begin{equation}
+\begin{aligned}
+Q_{t+1}=\hat{R}+\gamma \hat{T}Q_{t}
+\end{aligned}
+\label{eqn:Consistency}
+\end{equation}
+
+\paragraph{}
+In order to decrease the computation complexity, we could also do Monte-Carlo sampling for transition matrix $T$. 
+
+\paragraph{}
+Model-based method requires a lot of computation but are able to adjust to environment changes. For instance, when reward function changes, as long as the participant has learned the transition structure of the environment, he will still be able to obtain the reward. 
+
+%----------------------------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------------------------
+\section{Other Algorithms}
+\paragraph{}
+There has been much work about Model-Free and Model-Based combination method. \citet{daw2005uncertainty} and \citet{doya2002multiple} suggests that Model-Free and Model-Based value estimation may be combined in proportion to their certainty about their value estimation. \citet{glascher2010states} introduces a hybrid model whose hybrid weight is a exponential function. \citet{daw2011model} claims that Model-Based and Model-Free work simultaneously in our decision making. 
+
+\paragraph{}
+Except MF model, MB model and their combination, their still exists many other computational models. \citet{gershman2017reinforcement} argues that reinforcement learning is tightly bound to episodic memory and use a kernel function to make new predictions. \citet{botvinick2015reinforcement} and \citet{botvinick2012hierarchical} bring forward a hierarchical model of reinforcement learning. The main idea of hierarchical RL is to combine some action sequence as a new action for participants to choose. 
+%----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
